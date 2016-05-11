@@ -1,0 +1,12 @@
+/*.log
+/target
+/*-init.clj
+/resources/public/js/compiled
+out
+
+figwheel_server.log
+
+\#*.*\#
+\.\#*.*
+
+/gh-pages
