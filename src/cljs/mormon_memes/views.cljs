@@ -33,7 +33,7 @@
               [grid-item {:width "100%"}])]
    [(at-media {:min-width md-width
                :max-width lg-width}
-              [grid-item {:width "50%"}])]
+              [grid-item {:width "100%"}])]
    [(at-media {:min-width lg-width
                :max-width xl-width}
               [grid-item {:width "33%"}])]
