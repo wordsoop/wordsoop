@@ -1,13 +1,18 @@
 (ns mormon-memes.views
     (:require [re-frame.core :as re-frame]
               [garden.core :refer [css]]
-              [garden.selectors :refer [descendant]])
+              [garden.selectors :refer [descendant]]
+              [garden.stylesheet :refer [at-media]])
     (:require-macros
      [garden.selectors :refer [defclass defselector defpseudoelement defpseudoclass]]))
 
 (enable-console-print!)
 
-(def img-width 360)
+(def xs-width "0px")
+(def sm-width "544px")
+(def md-width "768px")
+(def lg-width "992px")
+(def xl-width "1200px")
 
 (defclass grid-item) ; blocks in the grid
 
@@ -19,8 +24,33 @@
 
 (def grid-css
   (css
-   #_[grid-item {:margin-bottom "1em"}]
-   [(descendant grid-item :img) {:width (str img-width "px")}]))
+
+   [(at-media {:min-width xs-width
+               :max-width sm-width}
+              [grid-item {:width "100%"}])]
+   [(at-media {:min-width sm-width
+               :max-width md-width}
+              [grid-item {:width "100%"}])]
+   [(at-media {:min-width md-width
+               :max-width lg-width}
+              [grid-item {:width "50%"}])]
+   [(at-media {:min-width lg-width
+               :max-width xl-width}
+              [grid-item {:width "33%"}])]
+   [(at-media {:min-width xl-width}
+              [grid-item {:width "33%"}])]
+   
+   #_[(at-media {:min-width "1200px"}
+              [(descendant grid-item :img)
+               {:width (str lg-width "px")}])]
+   #_[(at-media {:min-width "800px"
+               :max-width "1199px"}
+              [(descendant grid-item :img)
+               {:width (str md-width "px")}])]
+   #_[(at-media {:min-width "0px"
+               :max-width "799px"}
+              [(descendant grid-item :img)
+               {:width (str sm-width "px")}])]))
 
 (def hover-css
   (css [(descendant hoverable on-hover) {:display "none"}]
@@ -145,7 +175,7 @@
          (map (fn [x]
                 (let [path x #_ (str img-path x)]
                   ^{:key path}
-                  [:div.grid-item.hoverable {:style {:position "relative"}}
+                  [:div.grid-item.hoverable #_{:style {:position "relative"}}
                    
                    [:div.on-hover
                     {:style {:position   "absolute"
@@ -166,7 +196,8 @@
                                                    .-location
                                                    .-href)
                                              path)}]]]
-                   [:img {:src path}]]))
+                   [:img {:src path
+                          :width "100%"}]]))
               (shuffle imgs))]]
 
        

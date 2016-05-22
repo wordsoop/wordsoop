@@ -14,9 +14,15 @@
  :setup-masonry
  (fn [_ db]
    (do
-
+     ;; responsive version ----------
      (let [msnry (js/Masonry. ".grid" (clj->js {:itemSelector ".grid-item"
-                                                :columnWidth  360}))]
+                                                :columnWidth  ".grid-item"
+                                                :percentPosition true}))]
+       (-> (js/imagesLoaded ".grid")
+           (.on "progress" (fn [instance image] (js/Masonry. ".grid" "layout")))))
+     ;; non-responsive version ----------
+     #_(let [msnry (js/Masonry. ".grid" (clj->js {:itemSelector ".grid-item"
+                                                :columnWidth  120}))]
        (-> (js/imagesLoaded ".grid")
            (.on "progress" (fn [instance image] (js/Masonry. ".grid" "layout")))))
      db)))
